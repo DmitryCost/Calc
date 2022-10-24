@@ -1,6 +1,3 @@
-package Calculator;
-
-import java.sql.SQLOutput;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -22,8 +19,8 @@ public class Calc {
             if(input.contains(operations[i])){
                 operationsIndex = i;
                 break;
-                    }
-                }
+            }
+        }
         if (operationsIndex==-1){
             System.out.println("Вы ввели неправильное арифмитическое действие");
             return;
@@ -43,41 +40,39 @@ public class Calc {
             }
             if ( a < 0 || b < 0){
                 System.out.println("Числа не должны быть отрицательными");
-                    }
+            }
             //Арифметика с числами
             int result = 0;
             switch (operations[operationsIndex]) {
                 case "+":
                     result = a + b;
                     break;
-                    case "-":
-                        result = a - b;
+                case "-":
+                    result = a - b;
+                    break;
+                case "*":
+                    result = a * b;
+                    break;
+                //Ловим исключение для деления на 0
+                case "/":
+                    try {
+                        result = a / b;
+                    } catch (ArithmeticException | InputMismatchException exp) {
+                        System.out.println("Exception: " + exp);
+                        System.out.println("На 0 делить нельзя!");
                         break;
-                        case "*":
-                            result = a * b;
-                            break;
-                            //Ловим исключение для деления на 0
-                        case "/":
-                            try {
-                                result = a / b;
-                            } catch (ArithmeticException | InputMismatchException exp) {
-                                System.out.println("Exception: " + exp);
-                                System.out.println("На 0 делить нельзя!");
-                                break;
-                            }
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Что-то пошло не так, попробуй снова");
-                    } if (isRoman){
-                        System.out.println(roman.intToRoman(result));
-                    } else {
-                        System.out.println(result);
                     }
-
-                } else {
-                    System.out.println("Запись должна быть в одном формате");
-                }
+                    break;
+                default:
+                    throw new IllegalArgumentException("Что-то пошло не так, попробуй снова");
+            } if (isRoman){
+                System.out.println(roman.intToRoman(result));
+            } else {
+                System.out.println(result);
             }
+
+        } else {
+            System.out.println("Запись должна быть в одном формате");
         }
     }
 }
