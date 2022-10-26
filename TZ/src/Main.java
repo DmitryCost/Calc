@@ -58,9 +58,9 @@ public class Main {
                 b = Integer.parseInt(arrExpression[1]);
             }
 
-            if (a >= 10 | a < 0) {
+            if (a > 10 | a <= 0) {
                 throw new IllegalArgumentException("Числа должны быть отличными от 0 или не больше 10!");
-            } else if (b >= 10 | b < 0) {
+            } else if (b > 10 | b <= 0) {
                 throw new IllegalArgumentException("Числа должны быть отличными от 0 или не больше 10!");
             }
 
