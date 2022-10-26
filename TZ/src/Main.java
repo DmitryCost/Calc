@@ -4,34 +4,49 @@ import java.util.Scanner;
 
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
-        Roman roman = new Roman();
+
         Scanner scan = new Scanner(System.in);
+
         System.out.println("Введите выражение арабскими числами, 2+2 или римскими, (I+IV)," +
                 " используйте только операции: +,-,*,/, далее нажмите Enter и все!");
         String input = scan.nextLine().replaceAll(" ", "");
+
+        System.out.println(calc(input));
+
+    }
+
+    public static String calc(String input) throws IOException {
+
+        Roman roman = new Roman();
+
         String [] operations = {"+", "-", "/", "*"};
+
         //Входят в синтаксис регулярных выражений символы:"+","*"
         String [] regexOperations = {"\\+","-","/","\\*"};
+
         //Определение арифмитического действия
         int operationsIndex = -1;
+
         for (int i=0; i<operations.length; i++){
             if(input.contains(operations[i])){
                 operationsIndex = i;
                 break;
             }
         }
-        if (operationsIndex==-1){
+
+        if (operationsIndex==-1) {
             System.out.println("Вы ввели неправильное арифмитическое действие");
-            return;
         }
 
         // Сплитим по знаку и возвращаем массив чисел
         String [] arrExpression = input.split(regexOperations[operationsIndex]);
-        if (arrExpression.length > 2){
-            throw new IOException("Нельзя совершать операции более с чем двумя операндами");
+
+        if (arrExpression.length > 2) {
+            throw new IOException("Нельзя совершать операции более с чем двумя операндами запись должна быть 1+2,а не 1+2+3, например, т.д");
         }
-        if (roman.isRoman(arrExpression[0]) == roman.isRoman(arrExpression[1])){
+        if (roman.isRoman(arrExpression[0]) == roman.isRoman(arrExpression[1])) {
             int a,b;
             boolean isRoman = roman.isRoman(arrExpression[0]);
             if (isRoman) {
@@ -43,13 +58,9 @@ public class Main {
                 b = Integer.parseInt(arrExpression[1]);
             }
 
-            if (a >= 10) {
+            if (a >= 10 | a < 0) {
                 throw new IllegalArgumentException("Числа должны быть отличными от 0 или не больше 10!");
-            } else if (a <= 0) {
-                throw new IllegalArgumentException("Числа должны быть отличными от 0 или не больше 10!");
-            } else if (b >= 10) {
-                throw new IllegalArgumentException("Числа должны быть отличными от 0 или не больше 10!");
-            } else if (b <= 0) {
+            } else if (b >= 10 | b < 0) {
                 throw new IllegalArgumentException("Числа должны быть отличными от 0 или не больше 10!");
             }
 
@@ -77,15 +88,13 @@ public class Main {
                     break;
                 default:
                     throw new IllegalArgumentException("Что-то пошло не так, попробуй снова");
-            } if (isRoman){
-                System.out.println(roman.intToRoman(result));
+            } if (isRoman) {
+                return roman.intToRoman(result);
             } else {
-                System.out.println(result);
+                return Integer.toString(result);
             }
-
-        } else {
-            System.out.println("Запись должна быть в одном формате");
         }
+        return "Запись должна быть в одном формате, (1 + 1) или (I + I)";
     }
-}
 
+}
