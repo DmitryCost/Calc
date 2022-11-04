@@ -1,13 +1,52 @@
-
 import java.util.Scanner;
 
 class Test {
     public static String sum(String sum1, String sum2) throws Exception{
+        if (sum1.contains("\"")) {
+            sum1 = sum1.replace("\"", "");
+        }else {
+            throw new Exception("Первым агрументом должна быть строка в ковычках!");
+        }
+        if (sum2.contains("\"")){
+            sum2 = sum2.replace("\"","");
+        }else {
+            throw new Exception("Строки должны быть заключены в двойные ковычки, работает только с суммой и вычитанием!");
+        }
+        for (int i = 0; i < sum1.length(); i++) {
+            if (sum1.length() > 10){
+                throw new Exception("Длина каждой строки должна быть не больше или равной 10 символам!");
+            }
+        }
+        for (int j = 0; j < sum2.length(); j++) {
+            if (sum2.length() > 10){
+                throw new Exception("Длина каждой строки должна быть не больше или равной 10 символам!");
+            }
+        }
         String str1 = "\"";
         String result1 = sum1+sum2;
         return str1+result1+str1;
     }
     public static String subtract(String sub1, String sub2) throws Exception {
+        if (sub1.contains("\"")) {
+            sub1 = sub1.replace("\"", "");
+        }else {
+            throw new Exception("Первым агрументом должна быть строка в ковычках!");
+        }
+        if (sub2.contains("\"")) {
+            sub2 = sub2.replace("\"","");
+        } else {
+            throw new Exception("Строки должны быть заключены в двойные ковычки, работает только с суммой и вычитанием!");
+        }
+        for (int i = 0; i < sub1.length(); i++) {
+            if (sub1.length() > 10){
+                throw new Exception("Длина каждой строки должна быть не больше или равной 10 символам!");
+            }
+        }
+        for (int j = 0; j < sub2.length(); j++) {
+            if (sub2.length() > 10){
+                throw new Exception("Длина каждой строки должна быть не больше или равной 10 символам!");
+            }
+        }
         String str2 = "\"";
         int index = sub1.indexOf(sub2);
         if (index == -1){
@@ -19,6 +58,17 @@ class Test {
         }
     }
     public static String multiply(String mul1, String mul2) throws Exception{
+        if (mul1.contains("\"")) {
+            mul1 = mul1.replace("\"", "");
+        }else {
+            throw new Exception("Первым агрументом должна быть строка в ковычках!");
+        }
+        for (int i = 0; i < mul1.length(); i++) {
+            if (mul1.length() > 10){
+                throw new Exception("Длина каждой строки должна быть не больше или равной 10 символам!");
+            }
+        }
+
         String str3 = "\"";
         int mul3 = Integer.parseInt(mul2);
         if (mul3 <= 0 | mul3 > 10){
@@ -27,14 +77,24 @@ class Test {
         String result3 = "";
         for (int i = 0; i < mul3; i++) {
             result3 +=mul1;
-            if (result3.length() > 40){
-                result3 = result3 + "...";
+            if (result3.length() >= 40){
+                result3 = result3.substring(0,40)+"...";
                 break;
             }
         }
         return str3+result3+str3;
     }
     public static String division(String div1, String div2) throws Exception {
+        if (div1.contains("\"")) {
+            div1 = div1.replace("\"", "");
+        }else {
+            throw new Exception("Первым агрументом должна быть строка в ковычках!");
+        }
+        for (int i = 0; i < div1.length(); i++) {
+            if (div1.length() > 10){
+                throw new Exception("Длина каждой строки должна быть не больше или равной 10 символам!");
+            }
+        }
         String str4 = "\"";
         int div3 = Integer.parseInt(div2);
         if (div3 > 10 | div3 <= 0){
@@ -61,50 +121,29 @@ class Test {
         if (operationIndex == -1) {
             throw new Exception("Такой операции не существует");
         }
+
         String [] data = vvod.split(regexOperation[operationIndex]);
+        if (data.length > 2){
+            throw new Exception("Должно быть не более одной операции!");
+        }
         String a = data[0];
         String b = data[1];
-        String [] c = {"1","2","3","4","5","6","7","8","9","10"};
 
-        if (a.contains("\"") | b.contains("\"")) {
-            a = a.replace("\"", "");
-            b = b.replace("\"","");
-        }else {
-            throw new Exception("Строки должны быть заключены в двойные ковычки, работает только с суммой и вычитанием!");
-        }
-        for (int i = 0; i < c.length; i++) {
-            if (a.contains(c[i])){
-                throw new Exception("В начале всегда должна быть строка!");
-            }
-        }
-        for (int i = 0; i < a.length(); i++) {
-            if (a.length() > 10){
-                throw new Exception("Длина каждой строки должна быть не больше или равной 10 символам!");
-            }
-        }
-        for (int j = 0; j < b.length(); j++) {
-            if (b.length() > 10){
-                throw new Exception("Длина каждой строки должна быть не больше или равной 10 символам!");
-            }
-        }
+
         if (operation[operationIndex] == "*" || operation[operationIndex] == "/"){
             if (data[1].contains("\"")) {
-                throw new Exception("Строку можно умножать или делить только на числа!");
+                throw new Exception("Строку можно умножать или делить только на числа! Исправьте на \"какая-то строка\" *(/) число!");
             }
         }
-        if (operation[operationIndex] == "+"){
-            System.out.println(sum(a,b));
-        }
-        if (operation[operationIndex]== "-"){
-            System.out.println(subtract(a,b));
-        }
-        if (operation[operationIndex]=="*"){
-            System.out.println(multiply(a,b));
-        }else if (operation[operationIndex] == "/"){
-            System.out.println(division(a,b));
+        switch (operation[operationIndex]) {
+            case "+" -> System.out.println(sum(a, b));
+            case "-" -> System.out.println(subtract(a, b));
+            case "*" -> System.out.println(multiply(a, b));
+            case "/" -> System.out.println(division(a, b));
         }
     }
 }
+
 
 
 
